@@ -21,6 +21,15 @@ router.post("/", async (req, res) => {
   try {
     //Деструктуризируем введенные пользователем данные
     const { email, password } = req.body
+    //Проверяем существует ли уже пользователь с такой почтой
+    const existUser = await pool.query(
+      "SELECT email FROM users WHERE email = $1",
+      [email]
+    )
+    console.log(existUser.rows.length)
+    if (existUser.rows.length >= 1)
+      return res.json({ error: "Your email is already registered" })
+
     //Хешируем пароль для дальнейшего добавления в БД
     const hashedPassword = await bcrypt.hash(password, 10)
     //Добавляем пользователя в БД
