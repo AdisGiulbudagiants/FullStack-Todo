@@ -19,8 +19,6 @@ CREATE TABLE todos (
 );
 
 
-DROP TABLE users;
-DROP TABLE todos;
 
 TRUNCATE TABLE todos RESTART IDENTITY;
 
