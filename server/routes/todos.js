@@ -32,17 +32,21 @@ router.post("/", authenticateToken, async (req, res) => {
   }
 })
 
-// #######################################
 //Редактирование todo
 router.put("/", authenticateToken, async (req, res) => {
   try {
-    const user_id = req.user.id
-    const { id, title, description } = req.body
+    const { id, title, description, favorite } = req.body
+
+    const editTodo = await pool.query(
+      "UPDATE todos SET title = COALESCE($1, title), description = COALESCE($2, description), favorite = COALESCE($3, favorite) WHERE id = $4 RETURNING *",
+      [title, description, favorite, id]
+    )
+    console.log(editTodo.rows[0])
+    res.status(200).json(editTodo.rows)
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
 })
-// #######################################
 
 //Удаление todo
 router.delete("/", authenticateToken, async (req, res) => {
