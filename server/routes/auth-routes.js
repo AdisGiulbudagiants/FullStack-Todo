@@ -35,7 +35,7 @@ router.post("/register", async (req, res) => {
   }
 })
 
-//Редактирование данных пользователя
+//Редактирование имени пользователя
 router.put("/edit", authenticateToken, async (req, res) => {
   try {
     const { id, name } = req.body
@@ -48,7 +48,7 @@ router.put("/edit", authenticateToken, async (req, res) => {
 
     //Изменение имени пользователя
     const editUserName = await pool.query(
-      "UPDATE users SET name = $1 WHERE id = $2 RETURNING *",
+      "UPDATE users SET name = COALESCE($1, name) WHERE id = $2 RETURNING *",
       [name, id]
     )
     res.json(editUserName.rows[0])
