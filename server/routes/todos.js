@@ -33,9 +33,10 @@ router.post("/", authenticateToken, async (req, res) => {
 })
 
 //Редактирование todo
-router.put("/", authenticateToken, async (req, res) => {
+router.put("/:id", authenticateToken, async (req, res) => {
   try {
-    const { id, title, description, favorite } = req.body
+    const { id } = req.params
+    const { title, description, favorite } = req.body
 
     const editTodo = await pool.query(
       "UPDATE todos SET title = COALESCE($1, title), description = COALESCE($2, description), favorite = COALESCE($3, favorite) WHERE id = $4 RETURNING *",
@@ -49,10 +50,10 @@ router.put("/", authenticateToken, async (req, res) => {
 })
 
 //Удаление todo
-router.delete("/", authenticateToken, async (req, res) => {
+router.delete("/:id", authenticateToken, async (req, res) => {
   try {
     const user_id = req.user.id
-    const { id } = req.body
+    const { id } = req.params
 
     //Находим todo
     const findTodo = await pool.query(
@@ -69,6 +70,17 @@ router.delete("/", authenticateToken, async (req, res) => {
       id,
     ])
     res.status(200).json({ message: "Todo Deleted Successfully" })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+//Удаление всех todos у конкретного пользователя
+router.delete("/", authenticateToken, async (req, res) => {
+  try {
+    const user_id = req.user.id
+    await pool.query("DELETE FROM todos WHERE user_id = $1", [user_id])
+    res.status(200).json({ message: "All Your Todos Successfully Deleted" })
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
