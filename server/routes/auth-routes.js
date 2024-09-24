@@ -18,7 +18,7 @@ router.post("/register", async (req, res) => {
       [email]
     )
     if (existUser.rows.length >= 1)
-      return res.json({ error: "Your email is already registered" })
+      return res.json({ error: "This email is already registered" })
 
     //Хешируем пароль для дальнейшего добавления в БД
     const hashedPassword = await bcrypt.hash(password, 10)

@@ -1,6 +1,7 @@
-import { FaUserAlt, FaLock } from "react-icons/fa"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { useNavigate, NavLink } from "react-router-dom"
+import { FaUserAlt, FaLock } from "react-icons/fa"
 import { selectIsLoading, registerUser } from "../redux/slices/authSlice"
 
 const RegisterPage = () => {
@@ -8,10 +9,14 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("")
   const dispatch = useDispatch()
   const isLoading = useSelector(selectIsLoading)
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    dispatch(registerUser({ email, password }))
+    const action = await dispatch(registerUser({ email, password }))
+
+    //Перенаправление на страницу LoginPage.jsx для входа в аккаунт
+    if (registerUser.fulfilled.match(action)) navigate("/login")
   }
 
   return (
@@ -46,6 +51,12 @@ const RegisterPage = () => {
             {isLoading ? "Loading..." : "Create Account"}
           </button>
         </form>
+        <p>
+          Already Have An Account? Just{" "}
+          <NavLink className="font-poppins-semiBold" to="/login">
+            Sign In
+          </NavLink>
+        </p>
       </div>
     </div>
   )
