@@ -9,7 +9,13 @@ const app = express()
 const PORT = process.env.PORT || 4000
 
 app.use(express.json())
-app.use(cors({ credentials: true, origin: `http://localhost:${PORT}` || "*" }))
+app.use(
+  cors({
+    credentials: true,
+    origin: `*`,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+)
 app.use(cookieParser())
 
 app.use("/api/auth", authRoutes)

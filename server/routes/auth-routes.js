@@ -17,7 +17,6 @@ router.post("/register", async (req, res) => {
       "SELECT email FROM users WHERE email = $1",
       [email]
     )
-    console.log(existUser.rows.length)
     if (existUser.rows.length >= 1)
       return res.json({ error: "Your email is already registered" })
 
