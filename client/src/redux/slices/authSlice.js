@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios"
-import { setError } from "./errorSlice"
+import { Navigate } from "react-router-dom"
+import { setError } from "./notificationSlice.js"
 
 export const registerUser = createAsyncThunk(
   "auth/register",
@@ -15,7 +16,7 @@ export const registerUser = createAsyncThunk(
         thunkAPI.dispatch(setError(response.data.error))
         return thunkAPI.rejectWithValue(response.data.error)
       }
-      
+
       return response.data
     } catch (error) {
       thunkAPI.dispatch(setError(error.message))
