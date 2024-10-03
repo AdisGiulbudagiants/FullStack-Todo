@@ -2,21 +2,15 @@ import { useState } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { FaUserAlt, FaLock } from "react-icons/fa"
-import {
-  loginUser,
-  selectIsLoading,
-  selectUserData,
-} from "../redux/slices/authSlice"
+import { loginUser, selectIsLoading } from "../redux/slices/authSlice"
 import Input from "../components/Input"
 import Button from "../components/Button"
-import { setError } from "../redux/slices/notificationSlice"
 
 const LoginPage = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const dispatch = useDispatch()
   const isLoading = useSelector(selectIsLoading)
-  const userData = useSelector(selectUserData)
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
