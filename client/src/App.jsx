@@ -1,7 +1,7 @@
-import { lazy } from "react"
+import { lazy, Suspense } from "react"
 import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom"
-import LoginPage from "./pages/LoginPage.jsx"
-import RegisterPage from "./pages/RegisterPage.jsx"
+const RegisterPage = lazy(() => import("./pages/RegisterPage.jsx"))
+const LoginPage = lazy(() => import("./pages/LoginPage.jsx"))
 const NotFound = lazy(() => import("./pages/NotFound.jsx"))
 const Home = lazy(() => import("./pages/Home.jsx"))
 const Notification = lazy(() => import("./components/Notification.jsx"))
@@ -11,10 +11,38 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Navigate to="/register" />} />
-        <Route path="/home/:id" element={<Home />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="*" element={<NotFound />} />
+        <Route
+          path="/home/:id"
+          element={
+            <Suspense fallback="Loading...">
+              <Home />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <Suspense fallback="Loading...">
+              <RegisterPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Suspense fallback="Loading...">
+              <LoginPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <Suspense fallback="Loading...">
+              <NotFound />
+            </Suspense>
+          }
+        />
       </Routes>
       <Notification />
     </BrowserRouter>
