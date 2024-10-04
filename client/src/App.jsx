@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react"
 import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom"
+const Loading = lazy(() => import("./components/Loading.jsx"))
 const RegisterPage = lazy(() => import("./pages/RegisterPage.jsx"))
 const LoginPage = lazy(() => import("./pages/LoginPage.jsx"))
 const NotFound = lazy(() => import("./pages/NotFound.jsx"))
@@ -14,7 +15,7 @@ function App() {
         <Route
           path="/home/:id"
           element={
-            <Suspense fallback="Loading...">
+            <Suspense fallback={<Loading />}>
               <Home />
             </Suspense>
           }
@@ -22,7 +23,7 @@ function App() {
         <Route
           path="/register"
           element={
-            <Suspense fallback="Loading...">
+            <Suspense fallback={<Loading />}>
               <RegisterPage />
             </Suspense>
           }
@@ -30,7 +31,7 @@ function App() {
         <Route
           path="/login"
           element={
-            <Suspense fallback="Loading...">
+            <Suspense fallback={<Loading />}>
               <LoginPage />
             </Suspense>
           }
@@ -38,7 +39,7 @@ function App() {
         <Route
           path="*"
           element={
-            <Suspense fallback="Loading...">
+            <Suspense fallback={<Loading />}>
               <NotFound />
             </Suspense>
           }
