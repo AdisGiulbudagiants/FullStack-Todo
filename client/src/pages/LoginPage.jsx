@@ -1,7 +1,8 @@
-import { useState } from "react"
+import { useState, lazy } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { FaUserAlt, FaLock } from "react-icons/fa"
+const PulseLoader = lazy(() => import("react-spinners/PulseLoader"))
 import { loginUser, selectIsLoading } from "../redux/slices/authSlice"
 import Input from "../components/Input"
 import Button from "../components/Button"
@@ -50,7 +51,13 @@ const LoginPage = () => {
           <Button
             disabled={isLoading}
             type="submit"
-            text={isLoading ? "Loading..." : "Log In"}
+            text={
+              isLoading ? (
+                <PulseLoader size={8} margin={4} />
+              ) : (
+                <p className="font-poppins-medium">Log In</p>
+              )
+            }
           />
         </form>
         <p>
